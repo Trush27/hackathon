@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Registration</title>
+  <style>
+    body {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background-color: #f5f8fa;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      flex-direction: column; /* Added to arrange containers vertically */
+    }
+
+    .container {
+      width: 300px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 4px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px; /* Added to create space between containers */
+    }
+
+  h1 {
+    font-size: 24px;
+    font-weight: 800;
+    margin: 0 0 20px;
+    text-align: center;
+    color: #1da1f2;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  label {
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #f5f8fa;
+    border: 1px solid #e6ecf0;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #14171a;
+  }
+
+  button {
+    background-color: #1da1f2;
+    color: #fff;
+    padding: 12px;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #0c8de4;
+  }
+
+    /* Rest of the CSS styles */
+
+    .event-section {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>User Registration</h1>
+        <form id="registration-form">
+      <label for="name">Name:</label>
+      <input type="text" id="name" required>
+      
+      <label for="email">Email:</label>
+      <input type="email" id="email" required>
+      
+      <label for="password">Password:</label>
+      <input type="password" id="password" required>
+      
+      <label for="confirm-password">Confirm Password:</label>
+      <input type="password" id="confirm-password" required>
+      
+      <label for="phone">Phone Number:</label>
+      <input type="text" id="phone" required>
+      
+      <label for="age">Age:</label>
+      <input type="number" id="age" required>
+      <label for="gender">Gender:</label>
+      <select id="gender" required>
+        <option value="" selected disabled>Select Gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+      
+      <label for="address">Address:</label>
+      <textarea id="address" required></textarea>
+       <button type="submit">Register</button>
+    </form>
+  </div>
+
+
+    <!-- User Registration Form -->
+    <form id="registration-form">
+      <!-- Form fields -->
+    </form>
+  </div>
+
+  <div class="container event-section">
+    <h1>Event Search</h1>
+    <!-- Event Search -->
+    <input type="text" id="event-search" placeholder="Search events...">
+    <ul id="event-list"></ul>
+  </div>
+
+  <div class="container event-section">
+    <h1>Booking</h1>
+    <!-- Booking List -->
+    <ul id="booking-list"></ul>
+  </div>
+
+  <script>
+    // JavaScript code for event search and booking functionality
+    // ...
+    // Sample event data
+    const events = [
+      { id: 1, name: "Event 1", date: "2023-07-01" },
+      { id: 2, name: "Event 2", date: "2023-07-05" },
+      { id: 3, name: "Event 3", date: "2023-07-10" },
+      { id: 4, name: "Event 4", date: "2023-07-15" },
+      { id: 5, name: "Event 5", date: "2023-07-20" },
+    ];
+
+    // Event search functionality
+    const searchInput = document.getElementById("event-search");
+    const eventList = document.getElementById("event-list");
+
+    searchInput.addEventListener("input", function () {
+      const searchTerm = searchInput.value.toLowerCase();
+      const filteredEvents = events.filter((event) =>
+        event.name.toLowerCase().includes(searchTerm)
+      );
+      displayEvents(filteredEvents);
+    });
+
+    function displayEvents(events) {
+      eventList.innerHTML = "";
+      events.forEach((event) => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <div class="event-card" data-id="${event.id}">
+            <span>${event.name}</span>
+            <span>Date: ${event.date}</span>
+                      </div>
+        `;
+        eventList.appendChild(li);
+      });
+    }
+
+    displayEvents(events);
+
+    // Booking functionality
+    const bookingList = document.getElementById("booking-list");
+
+    eventList.addEventListener("click", function (event) {
+      const eventCard = event.target.closest(".event-card");
+      if (eventCard) {
+        const eventId = parseInt(eventCard.getAttribute("data-id"));
+        const selectedEvent = events.find((event) => event.id === eventId);
+        if (selectedEvent) {
+          const li = document.createElement("li");
+          li.innerHTML = `
+            <div class="booking-item">
+              <span class="event-name">${selectedEvent.name}</span>
+              <span class="remove-btn">X</span>
+            </div>
+          `;
+          bookingList.appendChild(li);
+        }
+      }
+    });
+
+    bookingList.addEventListener("click", function (event) {
+      const removeBtn = event.target.closest(".remove-btn");
+      if (removeBtn) {
+        const bookingItem = removeBtn.closest(".booking-item");
+        bookingItem.remove();
+      }
+    });
+
+    // User registration form submission
+    const registrationForm = document.getElementById("registration-form");
+
+    registrationForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const nameInput = document.getElementById("name");
+      const emailInput = document.getElementById("email");
+      const passwordInput = document.getElementById("password");
+      const confirmPasswordInput = document.getElementById("confirm-password");
+      const phoneInput = document.getElementById("phone");
+      const ageInput = document.getElementById("age");
+      const genderInput = document.getElementById("gender");
+      const addressInput = document.getElementById("address");
+
+      const name = nameInput.value;
+      const email = emailInput.value;
+      const password = passwordInput.value;
+      const confirmPassword = confirmPasswordInput.value;
+      const phone = phoneInput.value;
+      const age = ageInput.value;
+      const gender = genderInput.value;
+      const address = addressInput.value;
+
+      // Perform validation and registration logic here
+    });
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Event Ticket Booking</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <h1>Event Ticket Booking</h1>
+
+  <div class="search-form">
+    <h2>Search Events</h2>
+    <form id="search-form">
+      <label for="location">Location:</label>
+      <input type="text" id="location" name="location">
+      
+      <label for="date">Date:</label>
+      <input type="date" id="date" name="date">
+      
+      <label for="category">Category:</label>
+      <select id="category" name="category">
+        <option value="">Select Category</option>
+        <option value="concert">Concert</option>
+        <option value="sports">Sports</option>
+        <option value="conference">Conference</option>
+        <option value="theater">Theater</option>
+      </select>
+      
+      <button type="submit">Search</button>
+    </form>
+  </div>
+
+  <div id="event-results"></div>
+
+  <script>
+    document.getElementById("search-form").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent form submission
+
+      var location = document.getElementById("location").value;
+      var date = document.getElementById("date").value;
+      var category = document.getElementById("category").value;
+      
+      // Perform further processing, such as making an API request to fetch event results based on the search criteria
+      // You can use JavaScript's fetch() function or an AJAX library like jQuery for this purpose
+      // Example:
+      // fetch("/api/search-events?location=" + location + "&date=" + date + "&category=" + category)
+      //   .then(response => response.json())
+      //   .then(data => {
+      //     // Handle the response and display the event results dynamically on the page
+      //     var eventResultsDiv = document.getElementById("event-results");
+      //     eventResultsDiv.innerHTML = "";
+      //     data.forEach(event => {
+      //       eventResultsDiv.innerHTML += `
+      //         <div class="event">
+      //           <h3>${event.title}</h3>
+      //           <p>Venue: ${event.venue}</p>
+      //           <p>Date: ${event.date}</p>
+      //           <p>Time: ${event.time}</p>
+      //           <p>Ticket Availability: ${event.ticketAvailability}</p>
+      //           <p>Price: ${event.price}</p>
+      //           <button onclick="bookTickets(${event.id})">Book Tickets</button>
+      //         </div>
+      //       `;
+      //     });
+      //   })
+      //   .catch(error => {
+      //     // Handle errors if any
+      //     console.error(error);
+      //   });
+    });
+
+    function bookTickets(eventId) {
+      // Perform further processing for booking tickets, such as displaying a booking form or redirecting to a booking page
+      // Example:
+      // window.location.href = "/booking?eventId=" + eventId;
+    }
+  </script>
+</body>
+</html>
+<!-- feedback form -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Event Ticket Booking</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <h1>Event Ticket Booking</h1>
+
+  <div class="feedback-form">
+    <h2>Event Feedback</h2>
+    <form id="feedback-form">
+      <label for="event-name">Event Name:</label>
+      <input type="text" id="event-name" name="event-name" required>
+      
+      <label for="feedback">Feedback:</label>
+      <textarea id="feedback" name="feedback" required></textarea>
+      
+      <label for="rating">Rating:</label>
+      <select id="rating" name="rating" required>
+        <option value="">Select Rating</option>
+        <option value="5">5 - Excellent</option>
+        <option value="4">4 - Very Good</option>
+        <option value="3">3 - Good</option>
+        <option value="2">2 - Fair</option>
+        <option value="1">1 - Poor</option>
+      </select>
+      
+      <button type="submit">Submit Feedback</button>
+    </form>
+  </div>
+
+  <div id="feedback-confirmation"></div>
+
+  <script>
+    document.getElementById("feedback-form").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent form submission
+
+      var eventName = document.getElementById("event-name").value;
+      var feedback = document.getElementById("feedback").value;
+      var rating = document.getElementById("rating").value;
+      
+      // Perform further processing, such as making an API request to handle the feedback
+      // You can use JavaScript's fetch() function or an AJAX library like jQuery for this purpose
+      // Example:
+      // fetch("/api/submit-feedback", {
+      //   method: "POST",
+      //   body: JSON.stringify({ eventName: eventName, feedback: feedback, rating: rating })
+      // })
+      // .then(response => response.json())
+      // .then(data => {
+      //   // Handle the feedback submission response and display the confirmation message to the user
+      //   var confirmationDiv = document.getElementById("feedback-confirmation");
+      //   confirmationDiv.innerHTML = `
+      //     <h2>Feedback Confirmation</h2>
+      //     <p>Event Name: ${data.eventName}</p>
+      //     <p>Feedback: ${data.feedback}</p>
+      //     <p>Rating: ${data.rating}</p>
+      //   `;
+      // })
+      // .catch(error => {
+      //   // Handle errors if any
+      //   console.error(error);
+      // });
+    });
+  </script>
+</body>
+</html>
+<!-- --------user profile page -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Event Ticket Booking - User Profile</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <h1>Event Ticket Booking</h1>
+
+  <div class="user-profile">
+    <h2>User Profile</h2>
+    <div class="profile-details">
+      <div class="profile-photo">
+        <img id="profile-photo" src="default-profile-photo.jpg" alt="Profile Photo">
+        <input type="file" id="photo-upload" accept="image/*">
+      </div>
+      <div class="profile-info">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" value="John Doe" disabled>
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" value="********" disabled>
+        
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" name="phone" value="+1234567890">
+        
+        <button id="update-profile-btn">Update Profile</button>
+      </div>
+    </div>
+    
+    <div class="help-option">
+      <h3>Need Help?</h3>
+      <p>If you have any questions or need assistance, please contact our support team.</p>
+      <button id="help-btn">Contact Support</button>
+    </div>
+  </div>
+
+  <script>
+    // Update Profile Photo
+    document.getElementById("photo-upload").addEventListener("change", function(event) {
+      var file = event.target.files[0];
+      var reader = new FileReader();
+
+      reader.onload = function(e) {
+        var profilePhoto = document.getElementById("profile-photo");
+        profilePhoto.src = e.target.result;
+      };
+
+      reader.readAsDataURL(file);
+    });
+
+    // Update Profile
+    document.getElementById("update-profile-btn").addEventListener("click", function(event) {
+      var phone = document.getElementById("phone").value;
+
+      // Perform further processing, such as making an API request to update the user's profile
+      // You can use JavaScript's fetch() function or an AJAX library like jQuery for this purpose
+      // Example:
+      // fetch("/api/update-profile", {
+      //   method: "POST",
+      //   body: JSON.stringify({ phone: phone })
+      // })
+      // .then(response => response.json())
+      // .then(data => {
+      //   // Handle the profile update response and display a confirmation message to the user
+      //   alert("Profile updated successfully");
+      // })
+      // .catch(error => {
+      //   // Handle errors if any
+      //   console.error(error);
+      // });
+    });
+
+    // Help Option
+    document.getElementById("help-btn").addEventListener("click", function(event) {
+      // Perform actions when the user clicks on the help button
+      // For example, you can open a support chat window or redirect the user to a support page
+    });
+  </script>
+</body>
+</html>
+<!-- --------live event laoding page---- -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Event Ticket Booking - Live Event Loading</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <h1>Event Ticket Booking</h1>
+
+  <div class="live-events">
+    <h2>Live Events</h2>
+    <div class="search-form">
+      <input type="text" id="area-input" placeholder="Enter area">
+      <input type="text" id="event-input" placeholder="Enter event">
+      <button id="search-btn">Search</button>
+    </div>
+    <ul id="event-list"></ul>
+    <p id="loading-message">Loading events...</p>
+  </div>
+
+  <script>
+    // Simulated live event data
+    var events = [
+      { name: "Concert 1", area: "Area 1", date: "2023-06-27", time: "19:00", venue: "Venue 1" },
+      { name: "Sports Match 1", area: "Area 2", date: "2023-06-28", time: "15:30", venue: "Venue 2" },
+      { name: "Conference 1", area: "Area 1", date: "2023-06-29", time: "09:00", venue: "Venue 3" },
+      { name: "Theater Show 1", area: "Area 3", date: "2023-06-30", time: "20:00", venue: "Venue 4" }
+    ];
+
+    // Function to display events based on search criteria
+    function displayEvents(area, event) {
+      var eventList = document.getElementById("event-list");
+      eventList.innerHTML = ""; // Clear previous event list
+
+      events.forEach(function(eventData) {
+        if ((area === "" || eventData.area.toLowerCase().includes(area.toLowerCase())) &&
+            (event === "" || eventData.name.toLowerCase().includes(event.toLowerCase()))) {
+          var listItem = document.createElement("li");
+          listItem.innerHTML = `
+            <p><strong>${eventData.name}</strong></p>
+            <p>Area: ${eventData.area}</p>
+            <p>Date: ${eventData.date}</p>
+            <p>Time: ${eventData.time}</p>
+            <p>Venue: ${eventData.venue}</p>
+          `;
+          eventList.appendChild(listItem);
+        }
+      });
+
+      var loadingMessage = document.getElementById("loading-message");
+      loadingMessage.style.display = "none";
+    }
+
+    // Event listener for search button
+    document.getElementById("search-btn").addEventListener("click", function(event) {
+      var areaInput = document.getElementById("area-input").value;
+      var eventInput = document.getElementById("event-input").value;
+      displayEvents(areaInput, eventInput);
+    });
+
+    // Simulate loading events
+    setTimeout(function() {
+      displayEvents("", "");
+    }, 2000); // Display events after 2 seconds (simulated loading time)
+  </script>
+</body>
+</html>
