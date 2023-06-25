@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Event Ticket Booking</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+  <h1>Event Ticket Booking</h1>
+
+  <div class="feedback-form">
+    <h2>Event Feedback</h2>
+    <form id="feedback-form">
+      <label for="event-name">Event Name:</label>
+      <input type="text" id="event-name" name="event-name" required>
+
+      <label for="feedback">Feedback:</label>
+      <textarea id="feedback" name="feedback" required></textarea>
+
+      <label for="rating">Rating:</label>
+      <select id="rating" name="rating" required>
+        <option value="">Select Rating</option>
+        <option value="5">5 - Excellent</option>
+        <option value="4">4 - Very Good</option>
+        <option value="3">3 - Good</option>
+        <option value="2">2 - Fair</option>
+        <option value="1">1 - Poor</option>
+      </select>
+
+      <button type="submit">Submit Feedback</button>
+    </form>
+  </div>
+
+  <div id="feedback-confirmation"></div>
+
+  <script>
+    document.getElementById("feedback-form").addEventListener("submit", function (event) {
+      event.preventDefault(); // Prevent form submission
+
+      var eventName = document.getElementById("event-name").value;
+      var feedback = document.getElementById("feedback").value;
+      var rating = document.getElementById("rating").value;
+
+      // Perform further processing, such as making an API request to handle the feedback
+      // You can use JavaScript's fetch() function or an AJAX library like jQuery for this purpose
+      // Example:
+      // fetch("/api/submit-feedback", {
+      //   method: "POST",
+      //   body: JSON.stringify({ eventName: eventName, feedback: feedback, rating: rating })
+      // })
+      // .then(response => response.json())
+      // .then(data => {
+      //   // Handle the feedback submission response and display the confirmation message to the user
+      //   var confirmationDiv = document.getElementById("feedback-confirmation");
+      //   confirmationDiv.innerHTML = `
+      //     <h2>Feedback Confirmation</h2>
+      //     <p>Event Name: ${data.eventName}</p>
+      //     <p>Feedback: ${data.feedback}</p>
+      //     <p>Rating: ${data.rating}</p>
+      //   `;
+      // })
+      // .catch(error => {
+      //   // Handle errors if any
+      //   console.error(error);
+      // });
+    });
+  </script>
+</body>
+
+</html>
