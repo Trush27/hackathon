@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Event Ticket Booking - Live Event Loading</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <h1>Event Ticket Booking</h1>
+
+  <div class="live-events">
+    <h2>Live Events</h2>
+    <div class="search-form">
+      <input type="text" id="area-input" placeholder="Enter area">
+      <input type="text" id="event-input" placeholder="Enter event">
+      <button id="search-btn">Search</button>
+    </div>
+    <ul id="event-list"></ul>
+    <p id="loading-message">Loading events...</p>
+  </div>
+
+  <script>
+    // Simulated live event data
+    var events = [
+      { name: "Concert 1", area: "Area 1", date: "2023-06-27", time: "19:00", venue: "Venue 1" },
+      { name: "Sports Match 1", area: "Area 2", date: "2023-06-28", time: "15:30", venue: "Venue 2" },
+      { name: "Conference 1", area: "Area 1", date: "2023-06-29", time: "09:00", venue: "Venue 3" },
+      { name: "Theater Show 1", area: "Area 3", date: "2023-06-30", time: "20:00", venue: "Venue 4" }
+    ];
+
+    // Function to display events based on search criteria
+    function displayEvents(area, event) {
+      var eventList = document.getElementById("event-list");
+      eventList.innerHTML = ""; // Clear previous event list
+
+      events.forEach(function(eventData) {
+        if ((area === "" || eventData.area.toLowerCase().includes(area.toLowerCase())) &&
+            (event === "" || eventData.name.toLowerCase().includes(event.toLowerCase()))) {
+          var listItem = document.createElement("li");
+          listItem.innerHTML = `
+            <p><strong>${eventData.name}</strong></p>
+            <p>Area: ${eventData.area}</p>
+            <p>Date: ${eventData.date}</p>
+            <p>Time: ${eventData.time}</p>
+            <p>Venue: ${eventData.venue}</p>
+          `;
+          eventList.appendChild(listItem);
+        }
+      });
+
+      var loadingMessage = document.getElementById("loading-message");
+      loadingMessage.style.display = "none";
+    }
+
+    // Event listener for search button
+    document.getElementById("search-btn").addEventListener("click", function(event) {
+      var areaInput = document.getElementById("area-input").value;
+      var eventInput = document.getElementById("event-input").value;
+      displayEvents(areaInput, eventInput);
+    });
+
+    // Simulate loading events
+    setTimeout(function() {
+      displayEvents("", "");
+    }, 2000); // Display events after 2 seconds (simulated loading time)
+  </script>
+</body>
+</html>
