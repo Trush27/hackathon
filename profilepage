@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Event Ticket Booking - User Profile</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <h1>Event Ticket Booking</h1>
+
+  <div class="user-profile">
+    <h2>User Profile</h2>
+    <div class="profile-details">
+      <div class="profile-photo">
+        <img id="profile-photo" src="default-profile-photo.jpg" alt="Profile Photo">
+        <input type="file" id="photo-upload" accept="image/*">
+      </div>
+      <div class="profile-info">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" value="John Doe" disabled>
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" value="********" disabled>
+        
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" name="phone" value="+1234567890">
+        
+        <button id="update-profile-btn">Update Profile</button>
+      </div>
+    </div>
+    
+    <div class="help-option">
+      <h3>Need Help?</h3>
+      <p>If you have any questions or need assistance, please contact our support team.</p>
+      <button id="help-btn">Contact Support</button>
+    </div>
+  </div>
+
+  <script>
+    // Update Profile Photo
+    document.getElementById("photo-upload").addEventListener("change", function(event) {
+      var file = event.target.files[0];
+      var reader = new FileReader();
+
+      reader.onload = function(e) {
+        var profilePhoto = document.getElementById("profile-photo");
+        profilePhoto.src = e.target.result;
+      };
+
+      reader.readAsDataURL(file);
+    });
+
+    // Update Profile
+    document.getElementById("update-profile-btn").addEventListener("click", function(event) {
+      var phone = document.getElementById("phone").value;
+
+      // Perform further processing, such as making an API request to update the user's profile
+      // You can use JavaScript's fetch() function or an AJAX library like jQuery for this purpose
+      // Example:
+      // fetch("/api/update-profile", {
+      //   method: "POST",
+      //   body: JSON.stringify({ phone: phone })
+      // })
+      // .then(response => response.json())
+      // .then(data => {
+      //   // Handle the profile update response and display a confirmation message to the user
+      //   alert("Profile updated successfully");
+      // })
+      // .catch(error => {
+      //   // Handle errors if any
+      //   console.error(error);
+      // });
+    });
+
+    // Help Option
+    document.getElementById("help-btn").addEventListener("click", function(event) {
+      // Perform actions when the user clicks on the help button
+      // For example, you can open a support chat window or redirect the user to a support page
+    });
+  </script>
+</body>
+</html>
